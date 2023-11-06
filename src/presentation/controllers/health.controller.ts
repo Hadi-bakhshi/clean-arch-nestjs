@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import {
   HealthCheckService,
   HealthIndicator,
@@ -11,8 +11,11 @@ import {
   HttpHealthIndicator,
 } from '@nestjs/terminus';
 import { timeout } from 'rxjs';
+import { JwtGuard } from '../guards/auth';
 
 @ApiTags('Health Check')
+@ApiBearerAuth()
+@UseGuards(JwtGuard)
 @Controller('health')
 export class HealthCheckController {
   constructor(
